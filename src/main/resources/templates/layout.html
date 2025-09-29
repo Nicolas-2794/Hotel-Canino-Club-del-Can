@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${title} ?: 'Club del Can'">Club del Can</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <style>
+        body{font-family:Arial, sans-serif; margin:20px;}
+        .container{max-width:960px;margin:0 auto;}
+        header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+        nav a{margin-right:12px}
+        table{width:100%;border-collapse:collapse}
+        th,td{border:1px solid #ddd;padding:8px}
+        .actions form{display:inline}
+    </style>
+</head>
+<body>
+<div class="container" th:fragment="scaffold(content)">
+    <header>
+        <h1>Club del Can</h1>
+    </header>
+
+    <main th:insert="${content}"></main>
+</div>
+</body>
+</html>

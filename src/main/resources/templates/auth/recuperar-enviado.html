@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Correo enviado - Club del Can</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, #f8f4ef, #efe7dc);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            text-align: center;
+            max-width: 480px;
+            width: 100%;
+        }
+        .card img {
+            max-width: 120px;
+            margin-bottom: 15px;
+        }
+        h2 {
+            margin: 10px 0 15px;
+            color: #333;
+        }
+        p {
+            color: #555;
+            margin-bottom: 15px;
+        }
+        code {
+            display: block;
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px dashed #aaa;
+            color: #333;
+            word-wrap: break-word;
+        }
+        a {
+            display: inline-block;
+            margin-top: 18px;
+            color: #4CAF50;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <img src="/images/logo-clubdelcan.png" alt="Club del Can">
+    <h2>Revisa tu correo</h2>
+    <p>Hemos enviado un enlace para recuperar tu contraseña.</p>
+
+    <code th:text="'https://clubdelcan.demo/reset?token=' + ${token}">
+        https://.../reset?token=abc123
+    </code>
+
+    <a th:href="@{/login}">← Volver al login</a>
+</div>
+</body>
+</html>

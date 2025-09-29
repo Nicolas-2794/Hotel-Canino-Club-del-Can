@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: scaffold(~{::section})}">
+    <section>
+        <!-- Header -->
+        <header style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;">
+            <h2 style="margin:0;display:flex;align-items:center;gap:8px;">📅 Nueva Reserva</h2>
+            <a th:href="@{/reservas}"
+               style="text-decoration:none;padding:10px 14px;border:1px solid #bfa58c;border-radius:999px;color:#5a4635;font-weight:700;">
+                ← Volver a la lista
+            </a>
+        </header>
+
+        <!-- Mensaje error general -->
+        <p th:if="${error}"
+           style="background:#fff1f2;color:#7a1d28;border:1px solid #f4c2c7;padding:10px 12px;border-radius:10px;margin:0 0 12px 0;"
+           th:text="${error}"></p>
+
+        <!-- Form -->
+        <form th:action="@{/reservas}" method="post"
+              style="background:#fffaf7;padding:20px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);max-width:520px;">
+            <!-- Mascota -->
+            <div style="margin-bottom:12px;">
+                <label for="mascota" style="font-weight:700;display:block;margin-bottom:6px;">Mascota *</label>
+                <select id="mascota" name="mascotaId" required
+                        style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+                    <option value="">-- Seleccione --</option>
+                    <option th:each="m : ${mascotas}"
+                            th:value="${m.id}"
+                            th:text="${m.nombre}"
+                            th:selected="${param.mascotaId != null} ? (${m.id} == ${#numbers.parseInteger(param.mascotaId[0])}) : false">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Servicio (opcional) -->
+            <div style="margin-bottom:12px;">
+                <label for="servicio" style="font-weight:700;display:block;margin-bottom:6px;">Servicio (opcional)</label>
+                <select id="servicio" name="servicioId"
+                        style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+                    <option value="">-- Ninguno --</option>
+                    <option th:each="s : ${servicios}"
+                            th:value="${s.id}"
+                            th:text="${s.nombre}"
+                            th:selected="${param.servicioId != null} ? (${s.id} == ${#numbers.parseInteger(param.servicioId[0])}) : false">
+                    </option>
+                </select>
+            </div>
+
+            <!-- Fecha inicio -->
+            <div style="margin-bottom:12px;">
+                <label for="fechaInicio" style="font-weight:700;display:block;margin-bottom:6px;">Fecha inicio *</label>
+                <input id="fechaInicio" type="date" name="fechaInicio"
+                       th:value="${param.fechaInicio != null} ? ${param.fechaInicio[0]} : null"
+                       required oninput="fechaFin.min=this.value"
+                       style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+            </div>
+
+            <!-- Fecha fin -->
+            <div style="margin-bottom:14px;">
+                <label for="fechaFin" style="font-weight:700;display:block;margin-bottom:6px;">Fecha fin *</label>
+                <input id="fechaFin" type="date" name="fechaFin"
+                       th:value="${param.fechaFin != null} ? ${param.fechaFin[0]} : null"
+                       required
+                       style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+            </div>
+
+            <!-- CSRF -->
+            <th:block th:with="csrf=${#request.getAttribute('org.springframework.security.web.csrf.CsrfToken')} ?: ${#request.getAttribute('_csrf')}"
+                      th:if="${csrf != null}">
+                <input type="hidden" th:name="${csrf.parameterName}" th:value="${csrf.token}"/>
+            </th:block>
+
+            <!-- Acciones -->
+            <div style="display:flex;gap:10px;">
+                <button type="submit"
+                        style="padding:10px 16px;background:#e74c3c;border:none;border-radius:999px;color:#fff;font-weight:800;cursor:pointer;">
+                    Guardar
+                </button>
+                <a th:href="@{/reservas}"
+                   style="padding:10px 16px;border:1px solid #bfa58c;border-radius:999px;color:#5a4635;font-weight:800;text-decoration:none;">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

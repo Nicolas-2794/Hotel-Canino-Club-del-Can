@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: scaffold(~{::section})}">
+    <section>
+        <style>
+            .wrap{max-width:1100px;margin:0 auto}
+            .header{display:flex;justify-content:space-between;align-items:center;margin:6px 0 14px}
+            .header h2{margin:0;font-size:1.8rem;display:flex;align-items:center;gap:10px}
+            .btn{border:none;border-radius:999px;padding:10px 16px;font-weight:700;cursor:pointer;text-decoration:none}
+            .btn-primary{background:#d26b5f;color:#fff;box-shadow:0 6px 18px rgba(210,107,95,.35)}
+            .btn-ghost{background:#fff;border:1px solid #e6dccc;color:#6a4b33}
+            .alert{padding:10px 14px;border-radius:12px;margin:10px 0}
+            .alert.ok{background:#e7f6ec;border:1px solid #c4e8cf;color:#205f3b}
+            .card{background:#fffdf8;border:1px solid #efe7da;border-radius:18px;padding:0;
+                  box-shadow:0 10px 25px rgba(110,72,0,.06), inset 0 1px 0 #ffffffa8}
+            table{width:100%;border-collapse:separate;border-spacing:0}
+            thead th{font-size:.9rem;text-align:left;color:#6a5a47;padding:14px 16px;border-bottom:1px solid #efe7da}
+            tbody td{padding:14px 16px;border-bottom:1px solid #f2eadf}
+            tbody tr:last-child td{border-bottom:none}
+            .tag{display:inline-block;background:#f3ede4;border:1px solid #e6dccc;color:#6a4b33;
+                 font-weight:700;border-radius:999px;padding:4px 10px;margin-right:6px}
+            .actions{display:flex;gap:8px}
+        </style>
+
+        <div class="wrap">
+            <div class="header">
+                <h2>👥 Usuarios</h2>
+                <a class="btn btn-ghost" th:href="@{/admin/usuarios/nuevo}">+ Nuevo usuario</a>
+            </div>
+
+            <p class="alert ok" th:if="${param.ok}">Operación realizada con éxito.</p>
+            <p class="alert ok" th:if="${param.deleted}">Usuario eliminado.</p>
+
+            <div class="card">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Nombre</th>
+                        <th>Roles</th>
+                        <th>Activo</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="u : ${usuarios}">
+                        <td th:text="${u.email}">correo@dominio.cl</td>
+                        <td th:text="${u.nombre}">Nombre</td>
+                        <td>
+                            <span class="tag" th:each="r : ${u.roles}" th:text="${r.nombre}">ROLE_CLIENTE</span>
+                        </td>
+                        <td th:text="${u.activo ? 'Sí' : 'No'}">Sí</td>
+                        <td>
+                            <div class="actions">
+                                <a class="btn btn-ghost" th:href="@{|/admin/usuarios/${u.id}/editar|}">Editar</a>
+                                <form th:action="@{|/admin/usuarios/${u.id}/eliminar|}" method="post"
+                                      onsubmit="return confirm('¿Eliminar usuario?')">
+                                    <!-- CSRF -->
+                                    <th:block th:with="csrf=${#request.getAttribute('org.springframework.security.web.csrf.CsrfToken')} ?: ${#request.getAttribute('_csrf')}"
+                                              th:if="${csrf != null}">
+                                        <input type="hidden" th:name="${csrf.parameterName}" th:value="${csrf.token}"/>
+                                    </th:block>
+                                    <button class="btn btn-primary" type="submit">Eliminar</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr th:if="${#lists.isEmpty(usuarios)}">
+                        <td colspan="5" style="padding:18px;color:#7a6a58">No hay usuarios registrados.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top:12px">
+                <a class="btn btn-ghost" th:href="@{/admin}">← Volver al Panel</a>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

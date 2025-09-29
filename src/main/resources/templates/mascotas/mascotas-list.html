@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: scaffold(~{::section})}">
+    <section>
+
+        <!-- Header -->
+        <header style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;">
+            <h2 style="margin:0;font-size:34px;">
+                <span style="font-size:30px;margin-right:10px;">🐕</span> Mascotas
+            </h2>
+            <div style="display:flex;gap:10px;">
+                <a th:href="@{/admin}"
+                   style="display:inline-flex;align-items:center;gap:8px;padding:10px 16px;border:1px solid #d9cbbb;background:#faf6ef;border-radius:999px;text-decoration:none;color:#6b4b3a;">
+                    ← Volver al Panel
+                </a>
+                <a th:href="@{/mascotas/nueva}"
+                   style="display:inline-flex;align-items:center;gap:8px;padding:12px 18px;border:1px solid #cfe3cd;background:#eaf7e8;color:#2f6b36;
+                  border-radius:999px;text-decoration:none;font-weight:700;box-shadow:0 8px 16px rgba(25,135,84,.12);">
+                    + Nueva Mascota
+                </a>
+            </div>
+        </header>
+
+        <!-- Mensajes -->
+        <div th:if="${param.ok}" style="margin:8px 0; padding:10px 12px;border:1px solid #b7e2c5;background:#effaf3;color:#0f5f38;border-radius:12px;">
+            Mascota guardada correctamente.
+        </div>
+        <div th:if="${param.updated}" style="margin:8px 0; padding:10px 12px;border:1px solid #b7e2c5;background:#effaf3;color:#0f5f38;border-radius:12px;">
+            Mascota actualizada correctamente.
+        </div>
+        <div th:if="${param.deleted}" style="margin:8px 0; padding:10px 12px;border:1px solid #e6b8b8;background:#fff2f2;color:#7a2c2c;border-radius:12px;">
+            Mascota eliminada.
+        </div>
+        <div th:if="${warning}" th:text="${warning}"
+             style="margin:8px 0; padding:10px 12px;border:1px solid #e6b800;background:#fff8e1;color:#8a6d00;border-radius:12px;"></div>
+
+        <!-- Tabla -->
+        <div style="overflow:auto;border:1px solid #eadfcf;border-radius:18px;background:#fff7ee;
+                box-shadow:0 10px 30px rgba(71,42,6,.06), inset 0 1px 0 rgba(255,255,255,.7);">
+            <table style="width:100%;border-collapse:separate;border-spacing:0;">
+                <thead>
+                <tr style="background:linear-gradient(180deg,#fffaf1,#fff5e7);color:#5a4638;">
+                    <th style="text-align:left;padding:14px 16px;border-bottom:1px solid #eadfcf;">Nombre</th>
+                    <th style="text-align:left;padding:14px 16px;border-bottom:1px solid #eadfcf;">Raza</th>
+                    <th style="text-align:left;padding:14px 16px;border-bottom:1px solid #eadfcf;">Sexo</th>
+                    <th style="text-align:right;padding:14px 16px;border-bottom:1px solid #eadfcf;">Edad</th>
+                    <th style="text-align:right;padding:14px 16px;border-bottom:1px solid #eadfcf;">Peso (kg)</th>
+                    <th style="text-align:center;padding:14px 16px;border-bottom:1px solid #eadfcf;">Vacunas</th>
+                    <th style="text-align:left;padding:14px 16px;border-bottom:1px solid #eadfcf;">Tutor</th>
+                    <th style="text-align:center;padding:14px 16px;border-bottom:1px solid #eadfcf;">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="m : ${mascotas}" style="background:#fff;">
+                    <td style="padding:14px 16px;border-bottom:1px solid #f0e7db;" th:text="${m.nombre}">Sombra</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #f0e7db;" th:text="${m.raza}">Mestizo</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #f0e7db;" th:text="${m.sexo}">MACHO</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #f0e7db;text-align:right;" th:text="${m.edad}">4</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #f0e7db;text-align:right;"
+                        th:text="${#numbers.formatDecimal(m.pesoKg, 1, 'COMMA', 2, 'POINT')}">12.50</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #f0e7db;text-align:center;">
+            <span th:text="${m.vacunasAlDia ? 'Sí' : 'No'}"
+                  th:style="${m.vacunasAlDia} ? 'background:#eaf7e8;color:#2f6b36;border:1px solid #cfe3cd' : 'background:#fff2f2;color:#7a2c2c;border:1px solid #e6b8b8'"
+                  style="padding:6px 10px;border-radius:999px;font-weight:700;display:inline-block;min-width:46px;"></span>
+                    </td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #f0e7db;"
+                        th:text="${m.usuario != null ? m.usuario.email : '-'}">-</td>
+                    <td style="padding:14px 16px;border-bottom:1px solid #f0e7db;text-align:center;">
+                        <a th:href="@{|/mascotas/${m.id}/editar|}"
+                           style="display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border:1px solid #e0d3c0;background:#fff; color:#6b4b3a;
+                      border-radius:999px;text-decoration:none;margin-right:6px;">
+                            Editar
+                        </a>
+                        <form th:action="@{|/mascotas/${m.id}/eliminar|}" method="post" style="display:inline">
+                            <button type="submit" onclick="return confirm('¿Eliminar?')"
+                                    style="border:none;background:#d85b57;color:#fff;padding:9px 14px;border-radius:999px;
+                             font-weight:700;box-shadow:0 8px 18px rgba(216,91,87,.25);cursor:pointer;">
+                                Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+
+                <tr th:if="${#lists.isEmpty(mascotas)}">
+                    <td colspan="8" style="padding:18px;text-align:center;color:#6b4b3a;background:#fff;">
+                        Sin mascotas registradas.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </section>
+</div>
+</body>
+</html>

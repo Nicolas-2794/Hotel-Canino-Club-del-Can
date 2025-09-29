@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: scaffold(~{::section})}">
+    <section>
+        <!-- Header -->
+        <header style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px;">
+            <h2 style="margin:0;display:flex;align-items:center;gap:8px;">🏠
+                <span th:text="${habitacion.id} != null ? 'Editar habitación' : 'Nueva habitación'">Nueva habitación</span>
+            </h2>
+            <a th:href="@{/admin/habitaciones}"
+               style="text-decoration:none;padding:10px 14px;border:1px solid #bfa58c;border-radius:999px;color:#5a4635;font-weight:700;">
+                ← Volver a la lista
+            </a>
+        </header>
+
+        <!-- Form -->
+        <form th:action="${habitacion.id} != null ? @{'/admin/habitaciones/' + ${habitacion.id}} : @{/admin/habitaciones}"
+              th:object="${habitacion}" method="post"
+              style="background:#fffaf7;padding:20px;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.08);max-width:560px;">
+
+            <div style="margin-bottom:12px;">
+                <label for="numero" style="font-weight:700;display:block;margin-bottom:6px;">Número *</label>
+                <input id="numero" type="text" th:field="*{numero}" required
+                       style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+                <small th:if="${#fields.hasErrors('numero')}" th:errors="*{numero}"
+                       style="color:#b00020;display:block;margin-top:6px;"></small>
+            </div>
+
+            <div style="margin-bottom:12px;">
+                <label for="tipo" style="font-weight:700;display:block;margin-bottom:6px;">Tipo *</label>
+                <input id="tipo" type="text" th:field="*{tipo}" required placeholder="Individual, Doble, Premium…"
+                       style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+                <small th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"
+                       style="color:#b00020;display:block;margin-top:6px;"></small>
+            </div>
+
+            <div style="margin-bottom:12px;">
+                <label for="capacidad" style="font-weight:700;display:block;margin-bottom:6px;">Capacidad *</label>
+                <input id="capacidad" type="number" th:field="*{capacidad}" min="1" required
+                       style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+                <small th:if="${#fields.hasErrors('capacidad')}" th:errors="*{capacidad}"
+                       style="color:#b00020;display:block;margin-top:6px;"></small>
+            </div>
+
+            <div style="margin-bottom:12px;">
+                <label for="precioNoche" style="font-weight:700;display:block;margin-bottom:6px;">Precio por noche *</label>
+                <input id="precioNoche" type="number" th:field="*{precioNoche}" step="0.01" min="0" required
+                       placeholder="0.00"
+                       style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+                <small th:if="${#fields.hasErrors('precioNoche')}" th:errors="*{precioNoche}"
+                       style="color:#b00020;display:block;margin-top:6px;"></small>
+            </div>
+
+            <div style="margin-bottom:12px;">
+                <label for="descripcion" style="font-weight:700;display:block;margin-bottom:6px;">Descripción</label>
+                <input id="descripcion" type="text" th:field="*{descripcion}"
+                       style="width:100%;padding:10px;border-radius:10px;border:1px solid #d9cbb8;">
+            </div>
+
+            <div style="margin:8px 0 16px;">
+                <label style="display:flex;align-items:center;gap:8px;">
+                    <input type="checkbox" th:field="*{disponible}">
+                    Disponible
+                </label>
+            </div>
+
+            <!-- CSRF (si existe) -->
+            <th:block th:with="csrf=${#request.getAttribute('org.springframework.security.web.csrf.CsrfToken')} ?: ${#request.getAttribute('_csrf')}"
+                      th:if="${csrf != null}">
+                <input type="hidden" th:name="${csrf.parameterName}" th:value="${csrf.token}"/>
+            </th:block>
+
+            <div style="display:flex;gap:10px;">
+                <button type="submit"
+                        style="padding:10px 16px;background:#e74c3c;border:none;border-radius:999px;color:#fff;font-weight:800;cursor:pointer;">
+                    Guardar
+                </button>
+                <a th:href="@{/admin/habitaciones}"
+                   style="padding:10px 16px;border:1px solid #bfa58c;border-radius:999px;color:#5a4635;font-weight:800;text-decoration:none;">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

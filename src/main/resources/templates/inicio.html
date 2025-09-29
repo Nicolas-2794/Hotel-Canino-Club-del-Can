@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Club del Can – Hotel Canino</title>
+
+    <style>
+        /* ====== Paleta inspirada en tu logo ====== */
+        :root{
+          --cream:#F3E7D5;
+          --cream-2:#EFE0C7;
+          --ink:#20160F;         /* marrón casi negro */
+          --tan:#B58252;         /* acentos cálidos */
+          --tan-600:#9E6E45;
+          --olive:#6E5C46;       /* textos secundarios */
+          --paper:#fffaf1;       /* tarjetas claras */
+          --shadow:0 20px 45px rgba(32,22,15,.14);
+          --radius:18px;
+        }
+
+        /* ====== Reset suave ====== */
+        *{box-sizing:border-box}
+        html,body{margin:0}
+        body{
+          font-family:ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+          color:var(--ink);
+          background:
+            radial-gradient(1200px 600px at 100% -10%, #edd9bd 0%, transparent 60%),
+            radial-gradient(900px 500px at -10% 100%, #f5e7cf 0%, transparent 60%),
+            var(--cream);
+          min-height:100dvh;
+        }
+        img{max-width:100%;height:auto;display:block}
+
+        /* ====== Layout ====== */
+        .container{width:min(1100px,92%);margin-inline:auto}
+        header{
+          position:sticky; top:0; z-index:10;
+          backdrop-filter:saturate(180%) blur(6px);
+          background:color-mix(in oklab, var(--cream) 70%, white 30% / 80%);
+          border-bottom:1px solid #e6d6bf;
+        }
+        .nav{
+          display:flex; align-items:center; justify-content:space-between;
+          padding:14px 0; gap:14px;
+        }
+        .brand{display:flex; align-items:center; gap:14px; text-decoration:none; color:var(--ink)}
+        .brand img{width:54px; height:auto; filter: drop-shadow(0 6px 16px rgba(0,0,0,.08))}
+        .brand h1{font-size:1.25rem; letter-spacing:.06em; margin:0; font-weight:800}
+
+        .links a{
+          text-decoration:none; font-weight:700; letter-spacing:.02em;
+          color:var(--ink); padding:10px 14px; border-radius:999px; border:1px solid #e6d6bf;
+        }
+        .links a:hover{background:var(--paper)}
+        .btn{
+          display:inline-flex; align-items:center; gap:8px;
+          padding:12px 18px; border-radius:999px; border:1px solid #cdb391;
+          text-decoration:none; font-weight:800; letter-spacing:.02em; cursor:pointer;
+          background:linear-gradient(180deg, #f7ead4 0%, #efdfc5 100%);
+          box-shadow:0 10px 20px rgba(32,22,15,.08);
+          color:var(--ink);
+        }
+        .btn:hover{transform:translateY(-1px); box-shadow:0 14px 26px rgba(32,22,15,.12)}
+        .btn.primary{
+          background:linear-gradient(180deg, #c79362 0%, #b57a52 100%);
+          border-color:transparent; color:#fff;
+        }
+        .btn.primary:hover{filter:brightness(.98)}
+        .muted{color:var(--olive)}
+
+        /* ====== Hero ====== */
+        .hero{ padding: clamp(28px, 6vw, 60px) 0 20px }
+        .hero-inner{
+          display:grid; grid-template-columns:1.1fr .9fr; gap:28px; align-items:center;
+        }
+        @media (max-width: 900px){
+          .hero-inner{grid-template-columns:1fr}
+        }
+        .hero-card{
+          background:var(--paper);
+          border:1px solid #eadac5;
+          border-radius:var(--radius);
+          box-shadow:var(--shadow);
+          padding: clamp(18px, 3.6vw, 26px);
+        }
+        .title{
+          font-size: clamp(2rem, 4.6vw, 3.2rem);
+          line-height:1.05; margin:0 0 8px 0; letter-spacing:.02em;
+        }
+        .subtitle{margin:0 0 18px 0; color:var(--olive); font-size: clamp(1.05rem, 2.4vw, 1.2rem)}
+        .cta{display:flex; gap:12px; flex-wrap:wrap}
+
+        /* ====== Highlights ====== */
+        .grid{
+          display:grid; gap:16px; grid-template-columns:repeat(3,1fr); margin:26px 0 8px;
+        }
+        @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+        .card{
+          background:var(--paper); border:1px solid #eadac5; border-radius:var(--radius);
+          padding:18px; box-shadow:var(--shadow);
+        }
+        .card h3{margin:10px 0 6px 0; font-size:1.15rem}
+        .pill{
+          display:inline-block; padding:6px 10px; border-radius:999px;
+          background:#f0e2cb; color:var(--ink); font-size:.9rem; border:1px solid #e0ceb3;
+        }
+
+        /* ====== Footer ====== */
+        footer{margin:34px 0 28px; color:var(--olive); font-size:.95rem}
+        .footer-box{
+          border-top:1px dashed #d8c6ab; padding-top:16px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ====== Header ====== -->
+<header>
+    <div class="container nav">
+        <a class="brand" th:href="@{/}">
+            <img src="/images/logo-clubdelcan.png" alt="Logo Club del Can">
+            <h1>HOTEL Y GUARDERÍA CANINA</h1>
+        </a>
+
+        <div class="links">
+            <a class="btn primary" th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/login}">
+                Crear Cuenta
+            </a>
+            &nbsp;
+            <a class="btn primary" th:if="${!#authorization.expression('isAuthenticated()')}" th:href="@{/login}">
+                Acceder
+            </a>
+        </div>
+    </div>
+</header>
+<!-- ====== Hero ====== -->
+<main class="hero">
+    <div class="container hero-inner">
+        <section class="hero-card">
+<!--            <p class="pill">📍 Requínoa</p>-->
+            <h2 class="title">Bienestar y confort para tu mejor amigo</h2>
+            <br>
+            <p class="subtitle">Hospedaje, guardería y servicios para sentirse como en casa</p>
+        </section>
+
+        <!-- Tarjeta visual con logo grande -->
+        <section  style="display:flex;align-items:center;justify-content:center;min-height:420px;">
+            <img src="/images/foto-sombra-1.png" alt="Club del Can" style="max-width:360px;width:70%;height:auto;">
+        </section>
+    </div>
+
+    <!-- ====== Highlights / Beneficios ====== -->
+    <div class="container grid"
+        style="max-width:1200px;margin:0 auto;padding:0 20px;grid-column:1/-1;justify-self:center;">
+        <article class="card">
+            <h3>Entorno natural</h3>
+            <p class="muted">Parcela tranquila, lejos del ruido.
+                <br>
+                Paseos y juegos al aire libre.</p>
+        </article>
+        <article class="card">
+            <h3>Supervisión y cariño</h3>
+            <p class="muted">Equipo atento 24/7.
+                <br>
+                Rutinas de descanso y enriquecimiento.</p>
+        </article>
+        <article class="card">
+            <h3>Reserva online simple</h3>
+            <p class="muted">Gestiona mascotas y fechas en minutos. Confirmación por correo.</p>
+        </article>
+    </div>
+    <br>
+    <br>
+    <!-- ====== CTA final ====== -->
+    <div class="container"
+         style="display:flex;
+            align-items:center;
+            justify-content:center;
+            gap:40px;
+            margin:40px auto;">
+
+        <!-- Imagen circular -->
+        <div>
+            <img src="/images/foto-perros.jpeg" alt="Hotel Canino"
+                 style="width:320px; height:320px; object-fit:cover; border-radius:50%; box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+        </div>
+
+        <!-- Bloque info -->
+        <section class="card" style="display:inline-block; padding:20px; max-width:400px;">
+            <div>
+                <h3 style="margin:0 0 6px 0">Información Hotel</h3>
+                <p class="muted" style="margin:0">📍 Pablo Rubio #95, Requínoa, Región de O'Higgins</p>
+                <br>
+                <p class="muted" style="margin:0">📱 Whatsapp + 56 9 8643 3456</p>
+                <br>
+                <p class="muted" style="margin:0">✉️ contacto@clubdelcan.cl</p>
+                <br>
+                <p class="muted" style="margin:0">🕑 Lunes a Domingo 09:00 - 19:00</p>
+            </div>
+        </section>
+
+    </div>
+
+
+</main>
+
+
+<!-- ====== Footer ====== -->
+<footer class="container">
+    <div class="footer-box">
+        <span>© <span th:text="${#calendars.format(#dates.createNow(),'yyyy')}">2025</span> Club del Can</span>
+        <span class="muted">Requínoa, Chile · <a class="muted" href="mailto:contacto@clubdelcan.cl">contacto@clubdelcan.cl</a></span>
+    </div>
+</footer>
+
+</body>
+</html>

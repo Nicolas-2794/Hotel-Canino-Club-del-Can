@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: scaffold(~{::section})}">
+    <section>
+        <header style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+            <h2 style="margin:0;">🐶 <span th:text="${mascota.id} != null ? 'Editar Mascota' : 'Nueva Mascota'">Nueva Mascota</span></h2>
+            <div style="display:flex;gap:8px;">
+                <a th:href="@{/mascotas}" style="text-decoration:none;font-weight:600;">← Volver a la lista</a>
+            </div>
+        </header>
+
+        <!-- Errores -->
+        <p th:if="${error}" style="color:red" th:text="${error}"></p>
+
+        <form th:action="${mascota.id} != null ? @{'/mascotas/' + ${mascota.id}} : @{/mascotas}"
+              th:object="${mascota}" method="post"
+              style="background:#fffaf7; padding:20px; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); max-width:480px;">
+
+            <!-- Nombre -->
+            <div style="margin-bottom:14px;">
+                <label><strong>Nombre *</strong></label>
+                <input type="text" th:field="*{nombre}" required style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">
+                <small th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" style="color:red"></small>
+            </div>
+
+            <!-- Raza -->
+            <div style="margin-bottom:14px;">
+                <label><strong>Raza</strong></label>
+                <input type="text" th:field="*{raza}" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">
+            </div>
+
+            <!-- Sexo -->
+            <div style="margin-bottom:14px;">
+                <label><strong>Sexo</strong></label>
+                <select th:field="*{sexo}" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">
+                    <option value="">-- Seleccione --</option>
+                    <option value="MACHO">Macho</option>
+                    <option value="HEMBRA">Hembra</option>
+                    <option value="OTRO">Otro</option>
+                </select>
+                <small th:if="${#fields.hasErrors('sexo')}" th:errors="*{sexo}" style="color:red"></small>
+            </div>
+
+            <!-- Edad -->
+            <div style="margin-bottom:14px;">
+                <label><strong>Edad</strong></label>
+                <input type="number" th:field="*{edad}" min="0" style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">
+                <small th:if="${#fields.hasErrors('edad')}" th:errors="*{edad}" style="color:red"></small>
+            </div>
+
+            <!-- Peso -->
+            <div style="margin-bottom:14px;">
+                <label><strong>Peso (kg)</strong></label>
+                <input type="number" th:field="*{pesoKg}" min="0" step="0.01" placeholder="0.00"
+                       style="width:100%;padding:8px;border-radius:6px;border:1px solid #ccc;">
+                <small th:if="${#fields.hasErrors('pesoKg')}" th:errors="*{pesoKg}" style="color:red"></small>
+            </div>
+
+            <!-- Vacunas -->
+            <div style="margin-bottom:14px;">
+                <label style="display:flex;align-items:center;gap:6px;">
+                    <input type="checkbox" th:field="*{vacunasAlDia}" style="transform:scale(1.2);">
+                    Vacunas al día
+                </label>
+                <small th:if="${#fields.hasErrors('vacunasAlDia')}" th:errors="*{vacunasAlDia}" style="color:red"></small>
+            </div>
+
+            <!-- Acciones -->
+            <div style="margin-top:18px; display:flex; gap:10px;">
+                <button type="submit" style="padding:10px 16px; background:#e74c3c; border:none; border-radius:8px; color:#fff; font-weight:bold; cursor:pointer;">Guardar</button>
+                <a th:href="@{/mascotas}" style="padding:10px 16px; border:1px solid #bfa58c; border-radius:8px; color:#5a4635; font-weight:bold; text-decoration:none;">Cancelar</a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>

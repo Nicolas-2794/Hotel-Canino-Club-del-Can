@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: scaffold(~{::section})}">
+    <section>
+
+        <style>
+            .admin-hero {
+                display:flex; align-items:center; justify-content:space-between;
+                background: linear-gradient(180deg,#fff 0%, #faf5ee 100%);
+                border-radius:18px; padding:18px 20px; margin-bottom:18px;
+                box-shadow: 0 8px 30px rgba(0,0,0,.08), inset 0 1px 0 rgba(255,255,255,.6);
+            }
+            .admin-hero .brand {
+                display:flex; align-items:center; gap:14px;
+            }
+            .admin-hero img {
+                width:56px; height:56px; object-fit:contain;
+                filter: drop-shadow(0 2px 4px rgba(0,0,0,.12));
+            }
+            .admin-hero h2 {
+                margin:0; font-size:1.6rem; line-height:1.1;
+            }
+            .admin-hero p { margin:4px 0 0; color:#6b5f53; }
+
+            .admin-actions {
+                display:flex; gap:10px; align-items:center;
+            }
+            .btn {
+                display:inline-flex; align-items:center; justify-content:center; gap:8px;
+                padding:10px 14px; border-radius:10px; border:1px solid #e8dfd3;
+                background:#ffffff; color:#2d2a26; font-weight:700; text-decoration:none;
+                box-shadow: 0 2px 8px rgba(0,0,0,.06);
+                transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+            }
+            .btn:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(0,0,0,.10); }
+            .btn-primary { background:#4CAF50; color:#fff; border-color:transparent; }
+            .btn-primary:hover { background:#43a047; }
+            .btn-ghost { background:transparent; }
+
+            .grid {
+                display:grid;
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap:16px;
+            }
+            .card {
+                position:relative;
+                background: linear-gradient(180deg,#ffffff, #fbf6ef);
+                border:1px solid #efe6da;
+                border-radius:16px;
+                padding:18px;
+                text-decoration:none; color:inherit;
+                box-shadow: 0 10px 30px rgba(0,0,0,.08);
+                transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+            }
+            .card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0,0,0,.12); border-color:#eadfce; }
+            .card h3 { margin:0 0 6px; font-size:1.15rem; }
+            .card p { margin:0; color:#6b5f53; }
+            .card .emoji {
+                position:absolute; right:14px; top:12px; font-size:1.4rem; opacity:.9;
+            }
+            .muted { color:#6b5f53; }
+
+            .logout {
+                margin-top:18px; display:flex; justify-content:flex-end;
+            }
+            .logout button {
+                all:unset; cursor:pointer;
+                padding:10px 14px; border-radius:10px; color:#fff; font-weight:700;
+                background:#d9534f;
+                box-shadow: 0 2px 8px rgba(217,83,79,.25);
+                transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+            }
+            .logout button:hover { background:#c64541; transform: translateY(-1px); box-shadow: 0 8px 18px rgba(217,83,79,.35); }
+
+            /* Resumen pequeño opcional */
+            .kpis {
+                display:grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+                gap:12px; margin: 10px 0 18px;
+            }
+            .kpi {
+                background:#fff; border:1px solid #efe6da; border-radius:12px; padding:12px 14px;
+                box-shadow: 0 6px 18px rgba(0,0,0,.06);
+            }
+            .kpi strong { display:block; font-size:1.25rem; }
+            .kpi span { color:#6b5f53; font-size:.9rem; }
+        </style>
+
+        <!-- Encabezado / Bienvenida -->
+        <div class="admin-hero">
+            <div class="brand">
+                <img src="/images/logo-clubdelcan.png" alt="Club del Can">
+                <div>
+                    <h2>Bienvenido, Administrador</h2>
+                    <p class="muted">Gestiona el hotel, usuarios, mascotas y reservas desde un solo lugar.</p>
+                </div>
+            </div>
+            <div class="logout">
+                <form th:action="@{/logout}" method="post">
+                    <button type="submit">Cerrar sesión</button>
+                </form>
+            </div>
+
+        </div>
+        <!-- Grid de accesos -->
+        <div class="grid">
+
+            <a th:href="@{/admin/usuarios}" class="card">
+                <div class="emoji">👤</div>
+                <h3>Usuarios</h3>
+                <p>Gestionar cuentas y roles.</p>
+            </a>
+
+            <a th:href="@{/admin/mascotas}" class="card">
+                <div class="emoji">🐶</div>
+                <h3>Mascotas</h3>
+                <p>Registro y datos de clientes peludos.</p>
+            </a>
+
+            <a th:href="@{/admin/reservas}" class="card">
+                <div class="emoji">📅</div>
+                <h3>Reservas</h3>
+                <p>Calendario, estados y asignaciones.</p>
+            </a>
+
+            <a th:href="@{/admin/servicios}" class="card">
+                <div class="emoji">🛎️</div>
+                <h3>Servicios</h3>
+                <p>Hospedaje, paseos y extras.</p>
+            </a>
+
+            <a th:href="@{/admin/habitaciones}" class="card">
+                <div class="emoji">🏠</div>
+                <h3>Habitaciones</h3>
+                <p>Tipos, cupos y disponibilidad.</p>
+            </a>
+
+            <a th:href="@{/admin/hotel}" class="card">
+                <div class="emoji">🏨</div>
+                <h3>Información del Hotel</h3>
+                <p>Dirección, contacto y horarios.</p>
+            </a>
+        </div>
+    </section>
+</div>
+</body>
+</html>

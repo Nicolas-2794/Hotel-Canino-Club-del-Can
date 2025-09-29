@@ -1,0 +1,23 @@
+<!-- src/main/resources/templates/usuario/dashboard.html -->
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: scaffold(~{::section})}">
+    <section>
+        <h2>Panel del Usuario</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;">
+            <a th:href="@{/usuario/mascotas}" style="text-decoration:none;color:inherit;">
+                <div style="border:1px solid #ddd;border-radius:12px;padding:16px;">
+                    <h3>Mis Mascotas</h3><p>Crear/editar/eliminar</p>
+                </div>
+            </a>
+        </div>
+        <div style="margin-top:20px;">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Cerrar Sesión</button>
+            </form>
+        </div>
+    </section>
+</div>
+</body>
+</html>

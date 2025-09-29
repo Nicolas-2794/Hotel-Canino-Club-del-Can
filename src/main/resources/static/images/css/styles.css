@@ -1,0 +1,25 @@
+.btn {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:12px 22px;
+  border-radius:999px;
+  font-weight:700;
+  letter-spacing:.03em;
+  text-decoration:none;
+  cursor:pointer;
+  transition:.2s ease;
+  box-shadow:0 6px 18px rgba(32,22,15,.12);
+}
+
+.btn.primary {
+  background:linear-gradient(180deg, #c79362 0%, #b57a52 100%);
+  color:#fff;
+  border:none;
+}
+
+.btn.primary:hover {
+  filter:brightness(1.05);
+  transform:translateY(-2px);
+  box-shadow:0 10px 22px rgba(32,22,15,.18);
+}

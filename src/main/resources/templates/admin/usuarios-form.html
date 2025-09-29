@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:replace="~{layout :: scaffold(~{::section})}">
+    <section class="card">
+        <h2 style="display:flex;align-items:center;gap:8px;">
+            <span style="font-size:1.2em;">👤</span>
+            <span th:text="${usuario.id} != null ? 'Editar usuario' : 'Nuevo usuario'">Nuevo usuario</span>
+        </h2>
+
+        <form th:object="${usuario}"
+              th:action="${usuario.id} != null ? @{|/admin/usuarios/${usuario.id}|} : @{/admin/usuarios}"
+              method="post" style="max-width:560px; display:flex; flex-direction:column; gap:16px;">
+
+            <!-- Email -->
+            <div>
+                <label>Email *</label><br>
+                <input type="email" th:field="*{email}" required style="width:100%;padding:8px;">
+                <small th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color:red"></small>
+            </div>
+
+            <!-- Nombre -->
+            <div>
+                <label>Nombre</label><br>
+                <input type="text" th:field="*{nombre}" style="width:100%;padding:8px;">
+            </div>
+
+            <!-- Contraseña (debajo de Nombre ahora) -->
+            <div>
+                <label>Contraseña <span th:if="${usuario.id != null}">(dejar en blanco para no cambiar)</span></label><br>
+                <input type="password" th:field="*{password}" style="width:100%;padding:8px;">
+            </div>
+
+            <!-- Roles -->
+            <div>
+                <label>Roles</label><br>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-top:6px;"
+                     th:each="r : ${rolesDisponibles}">
+                    <label style="display:flex;align-items:center;gap:6px;
+                                  border:1px solid #ddd;padding:6px 12px;border-radius:20px;
+                                  background:#fafafa;cursor:pointer;">
+                        <input type="checkbox" name="roles"
+                               th:value="${r.nombre}"
+                               th:checked="${usuario.roles != null and usuario.roles.contains(r)}">
+                        <span th:text="${r.nombre}">ROLE_CLIENTE</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Activo -->
+            <div>
+                <label style="display:flex;align-items:center;gap:6px;">
+                    <input type="checkbox" th:field="*{activo}">
+                    Activo
+                </label>
+            </div>
+
+            <!-- Botones -->
+            <div style="margin-top:12px;display:flex;gap:10px;">
+                <button type="submit"
+                        style="background:#d9534f;color:white;padding:10px 18px;
+                               border:none;border-radius:8px;cursor:pointer;">
+                    Guardar
+                </button>
+                <a th:href="@{/admin/usuarios}"
+                   style="padding:10px 18px;border:1px solid #b5651d;
+                          border-radius:8px;color:#b5651d;text-decoration:none;">
+                    Cancelar
+                </a>
+            </div>
+        </form>
+    </section>
+</div>
+</body>
+</html>
