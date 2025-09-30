@@ -33,7 +33,7 @@ public class SecurityConfig {
                         // públicas
                         .requestMatchers("/", "/login", "/recuperar", "/recuperar/enviado",
                                 "/css/**", "/js/**", "/images/**", "/webjars/**",
-                                "/favicon.ico", "/error").permitAll()
+                                "/favicon.ico", "/error", "/registro-falso").permitAll()
                         // áreas por rol
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .requestMatchers("/usuario/**").hasAnyRole("CLIENTE","ADMIN")

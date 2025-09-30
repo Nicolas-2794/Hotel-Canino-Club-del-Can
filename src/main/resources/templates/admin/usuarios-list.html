@@ -38,7 +38,7 @@
                     <tr>
                         <th>Email</th>
                         <th>Nombre</th>
-                        <th>Roles</th>
+<!--                        <th>Roles</th>-->
                         <th>Activo</th>
                         <th>Acciones</th>
                     </tr>
@@ -47,9 +47,9 @@
                     <tr th:each="u : ${usuarios}">
                         <td th:text="${u.email}">correo@dominio.cl</td>
                         <td th:text="${u.nombre}">Nombre</td>
-                        <td>
-                            <span class="tag" th:each="r : ${u.roles}" th:text="${r.nombre}">ROLE_CLIENTE</span>
-                        </td>
+<!--                        <td>-->
+<!--                            <span class="tag" th:each="r : ${u.roles}" th:text="${r.nombre}">ROLE_CLIENTE</span>-->
+<!--                        </td>-->
                         <td th:text="${u.activo ? 'Sí' : 'No'}">Sí</td>
                         <td>
                             <div class="actions">
